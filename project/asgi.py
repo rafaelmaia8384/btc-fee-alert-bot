@@ -1,16 +1,16 @@
-"""
-ASGI config for project project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
-"""
-
 import os
+import multiprocessing
+from .bot import start_bot
+from .fees import fee_monitoring
+
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
 
 application = get_asgi_application()
+
+p1 = multiprocessing.Process(target=start_bot)
+p2 = multiprocessing.Process(target=fee_monitoring)
+p1.start()
+p2.start()
